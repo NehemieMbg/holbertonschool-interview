@@ -3,6 +3,8 @@
 """
     Check if boxes can be opened with previous opened boxes
 """
+
+
 def canUnlockAll(boxes):
 
     keys = [0]
