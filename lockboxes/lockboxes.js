@@ -1,33 +1,19 @@
 "use strict";
 
 function lockboxes(boxes) {
-  let count = 1;
-  let i = 0;
-  const boxesOpened = { 0: true };
-  const keys = [];
+  const boxesOpened = new Set([0]);
+  const keys = [...boxes[0]];
 
-  boxes[0].forEach((key) => {
-    keys.push(key);
-  });
+  while (keys.length > 0) {
+    const key = keys.pop();
 
-  while (i < boxes.length) {
-    if (keys.includes(i)) {
-      if (!boxesOpened[i]) count++;
-      boxesOpened[i] = true;
-
-      // Avoid double keys
-      boxes[i].forEach((key) => {
-        if (!keys.includes(key)) {
-          keys.push(key);
-          i = 1;
-        }
-      });
+    if (!boxesOpened.has(key) && key < boxes.length) {
+      boxesOpened.add(key);
+      keys.push(...boxes[key]);
     }
-
-    i++;
   }
 
-  return count === boxes.length;
+  return boxesOpened.size === boxes.length;
 }
 
 console.log(lockboxes([[1], [2], [3], [4], []]));
