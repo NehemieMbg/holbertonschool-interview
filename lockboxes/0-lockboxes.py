@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 
+"""
+    Check if boxes can be opened with previous opened boxes
+"""
 def canUnlockAll(boxes):
+
     keys = [0]
     boxesOpened = {0: True}
 
