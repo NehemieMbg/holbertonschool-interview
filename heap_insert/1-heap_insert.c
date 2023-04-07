@@ -29,27 +29,27 @@ int subtree_len(heap_t *node)
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	if (!*root)
+	if (*root == NULL)
 	{
-		*root = binary_tree_node(NULL, value);
-		return (*root);
+		*root = malloc(sizeof(heap_t));
+		if (*root == NULL)
+			return NULL;
+		(*root)->n = value;
+		(*root)->left = NULL;
+		(*root)->right = NULL;
+		return *root;
 	}
 
-	if (!(*root)->left)
+	if (value < (*root)->n)
 	{
-		(*root)->left = binary_tree_node(*root, value);
-		return ((*root)->left);
+		heap_insert(&((*root)->left), value);
+		if ((*root)->left->n > (*root)->n)
+			swap(&((*root)->left->n), &((*root)->n));
+		return *root;
 	}
 
-	if (!(*root)->right)
-	{
-		(*root)->right = binary_tree_node(*root, value);
-		return ((*root)->right);
-	}
-
-	if (subtree_len((*root)->left) <= subtree_len((*root)->right))
-		return (heap_insert(&((*root)->left), value));
-
-	else
-		return (heap_insert(&((*root)->right), value));
+	heap_insert(&((*root)->right), value);
+	if ((*root)->right->n > (*root)->n)
+		swap(&((*root)->right->n), &((*root)->n));
+	return *root;
 }
