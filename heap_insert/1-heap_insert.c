@@ -1,84 +1,77 @@
 #include "binary_trees.h"
 
 /**
- * subtree_len - returns the length of the subtree from a given node
- * @node: pointer to the node to measure the subtree length from
- * Return: length of the subtree
- */
-size_t subtree_len(const binary_tree_t *node)
-{
-	size_t len = 0;
-
-	if (node == NULL)
-		return (0);
-
-	if (node->left != NULL)
-		len += subtree_len(node->left) + 1;
-
-	if (node->right != NULL)
-		len += subtree_len(node->right) + 1;
-
-	return (len);
-}
-
-/**
- * heap_insert - insert a value into a Max Binary Heap
- * @root: double pointer to root node
- * @value: value to insert in the new node
- * Return: pointer to freshly inserted node, NULL on failure
+ * heap_insert - inserts a value into a Max Binary Heap
+ * @root: double pointer to the root node of the Heap to insert the value
+ * @value: value to store in the node to be inserted
+ * Return: pointer to the inserted node, or NULL on failure
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *new_node, *current;
+	heap_t *new_node = NULL, *current = *root;
+	int value_tmp;
 
-	if (root == NULL)
+	if (!root)
 		return (NULL);
 
-	/* Create new node */
 	new_node = binary_tree_node(NULL, value);
-	if (new_node == NULL)
+	if (!new_node)
 		return (NULL);
 
-	/* Insert new node into Max Binary Heap */
-	if (*root == NULL)
-	{
-		*root = new_node;
-		return (new_node);
-	}
+	if (!(*root))
+		return (*root = new_node);
 
-	current = *root;
-	while (current != NULL)
+	while (1)
 	{
-		/* Insert new node as left child */
-		if (subtree_size(current->left) <= subtree_size(current->right))
+		if (!current->left)
 		{
-			if (current->left == NULL)
-			{
-				current->left = new_node;
-				new_node->parent = current;
-				break;
-			}
+			current->left = new_node, new_node->parent = current;
+			break;
+		}
+		else if (!current->right)
+		{
+			current->right = new_node, new_node->parent = current;
+			break;
+		}
+		else if (subtree_size(current->left) <= subtree_size(current->right))
 			current = current->left;
-		}
-		/* Insert new node as right child */
 		else
-		{
-			if (current->right == NULL)
-			{
-				current->right = new_node;
-				new_node->parent = current;
-				break;
-			}
 			current = current->right;
-		}
 	}
-
-	/* Sort the tree after each insertion */
-	while (new_node->parent != NULL && new_node->n > new_node->parent->n)
-	{
-		swap_int(&(new_node->n), &(new_node->parent->n));
-		new_node = new_node->parent;
-	}
+	while (new_node->parent && new_node->n > new_node->parent->n)
+		swap_int(&(new_node->n), &(new_node->parent->n)), new_node = new_node->parent;
 
 	return (new_node);
+}
+
+/**
+ * subtree_size - measures the size of a subtree
+ * @tree: pointer to the root node of the subtree to measure the size
+ * Return: size of the subtree
+ */
+size_t subtree_size(heap_t *tree)
+{
+	size_t size = 0;
+
+	if (tree)
+	{
+		size += 1;
+		size += subtree_size(tree->left);
+		size += subtree_size(tree->right);
+	}
+	return (size);
+}
+
+/**
+ * swap_int - swaps two integers
+ * @a: pointer to the first integer
+ * @b: pointer to the second integer
+ */
+void swap_int(int *a, int *b)
+{
+	int tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }

@@ -21,11 +21,9 @@ typedef struct binary_tree_s
 
 typedef struct binary_tree_s heap_t;
 
-/* display purpose */
-void binary_tree_print(const binary_tree_t *);
-/* creation of binary tree */
-binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
-/* heap insertion */
-heap_t *heap_insert(heap_t **root, int value);
+size_t binary_tree_size(const binary_tree_t *tree);
+void binary_tree_print(const binary_tree_t *tree);
+void swap_int(int *a, int *b);
+size_t subtree_size(heap_t *tree);
 
 #endif /* _BINARY_TREES_H_ */
