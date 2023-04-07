@@ -1,33 +1,6 @@
 #include "binary_trees.h"
 
 /**
- * subtree_len - check and returns smallest subtree
- * @node: pointer to node
- *
- * Return: smallest path as int
- */
-int subtree_len(heap_t *node)
-{
-	int left, right;
-
-	if (!node)
-		return (-1);
-	left = subtree_len(node->left);
-	right = subtree_len(node->right);
-	if (left > right)
-		return (left + 1);
-	else
-		return (right + 1);
-}
-
-void swap(int *a, int *b)
-{
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-/**
  * heap_insert - insert a value into a Max Binary Heap
  * @root: double pointer to root node
  * @value: value to insert in the new node
@@ -36,27 +9,44 @@ void swap(int *a, int *b)
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	if (*root == NULL)
+	if (!*root)
 	{
-		*root = malloc(sizeof(heap_t));
-		if (*root == NULL)
-			return NULL;
-		(*root)->n = value;
-		(*root)->left = NULL;
-		(*root)->right = NULL;
-		return *root;
+		*root = binary_tree_node(NULL, value);
+		return (*root);
 	}
 
-	if (value < (*root)->n)
+	if (!(*root)->left)
 	{
-		heap_insert(&((*root)->left), value);
-		if ((*root)->left->n > (*root)->n)
-			swap(&((*root)->left->n), &((*root)->n));
-		return *root;
+		(*root)->left = binary_tree_node(*root, value);
+		return ((*root)->left);
 	}
 
-	heap_insert(&((*root)->right), value);
-	if ((*root)->right->n > (*root)->n)
-		swap(&((*root)->right->n), &((*root)->n));
-	return *root;
+	if (!(*root)->right)
+	{
+		(*root)->right = binary_tree_node(*root, value);
+		return ((*root)->right);
+	}
+
+	if (subtree_len((*root)->left) <= subtree_len((*root)->right))
+		return (heap_insert(&((*root)->left), value));
+
+	else
+		return (heap_insert(&((*root)->right), value));
+}
+
+/**
+ * subtree_len - check and returns smallest subtree
+ * @node: pointer to node
+ *
+ * Return: smallest path as int
+ */
+int subtree_len(heap_t *node)
+{
+	if (!node)
+		return (0);
+
+	int left = subtree_len(node->left);
+	int right = subtree_len(node->right);
+
+	return (left <= right ? left + 1 : right + 1);
 }
