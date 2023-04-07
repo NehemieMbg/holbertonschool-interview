@@ -42,11 +42,14 @@ heap_t *heap_insert(heap_t **root, int value)
  */
 int subtree_len(heap_t *node)
 {
+	int left, right;
+
 	if (!node)
-		return (0);
-
-	int left = subtree_len(node->left);
-	int right = subtree_len(node->right);
-
-	return (left <= right ? left + 1 : right + 1);
+		return (-1);
+	left = subtree_len(node->left);
+	right = subtree_len(node->right);
+	if (left > right)
+		return (left + 1);
+	else
+		return (right + 1);
 }
