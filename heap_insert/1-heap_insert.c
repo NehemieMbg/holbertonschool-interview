@@ -29,33 +29,56 @@ size_t subtree_len(const binary_tree_t *node)
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *new;
+	heap_t *new_node, *current;
 
-	new = binary_tree_node(NULL, value);
-	if (!new)
+	if (root == NULL)
 		return (NULL);
 
-	if (*root == NULL)
-		return (*root = new);
+	/* Create new node */
+	new_node = binary_tree_node(NULL, value);
+	if (new_node == NULL)
+		return (NULL);
 
-	if (subtree_len((*root)->left) <= subtree_len((*root)->right))
+	/* Insert new node into Max Binary Heap */
+	if (*root == NULL)
 	{
-		if ((*root)->left == NULL)
-		{
-			new->parent = *root;
-			return ((*root)->left = new);
-		}
-		else
-			return (heap_insert(&((*root)->left), value));
+		*root = new_node;
+		return (new_node);
 	}
-	else
+
+	current = *root;
+	while (current != NULL)
 	{
-		if ((*root)->right == NULL)
+		/* Insert new node as left child */
+		if (subtree_size(current->left) <= subtree_size(current->right))
 		{
-			new->parent = *root;
-			return ((*root)->right = new);
+			if (current->left == NULL)
+			{
+				current->left = new_node;
+				new_node->parent = current;
+				break;
+			}
+			current = current->left;
 		}
+		/* Insert new node as right child */
 		else
-			return (heap_insert(&((*root)->right), value));
+		{
+			if (current->right == NULL)
+			{
+				current->right = new_node;
+				new_node->parent = current;
+				break;
+			}
+			current = current->right;
+		}
 	}
+
+	/* Sort the tree after each insertion */
+	while (new_node->parent != NULL && new_node->n > new_node->parent->n)
+	{
+		swap_int(&(new_node->n), &(new_node->parent->n));
+		new_node = new_node->parent;
+	}
+
+	return (new_node);
 }
