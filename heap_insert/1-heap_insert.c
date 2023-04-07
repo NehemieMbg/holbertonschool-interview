@@ -20,6 +20,13 @@ int subtree_len(heap_t *node)
 		return (right + 1);
 }
 
+void swap(int *a, int *b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
 /**
  * heap_insert - insert a value into a Max Binary Heap
  * @root: double pointer to root node
