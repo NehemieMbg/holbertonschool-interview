@@ -1,6 +1,38 @@
 #include "binary_trees.h"
 
 /**
+ * subtree_size - measures the size of a subtree
+ * @tree: pointer to the root node of the subtree to measure the size
+ * Return: size of the subtree
+ */
+size_t subtree_size(heap_t *tree)
+{
+	size_t size = 0;
+
+	if (tree)
+	{
+		size += 1;
+		size += subtree_size(tree->left);
+		size += subtree_size(tree->right);
+	}
+	return (size);
+}
+
+/**
+ * swap_int - swaps two integers
+ * @a: pointer to the first integer
+ * @b: pointer to the second integer
+ */
+void swap_int(int *a, int *b)
+{
+	int tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+/**
  * heap_insert - inserts a value into a Max Binary Heap
  * @root: double pointer to the root node of the Heap to insert the value
  * @value: value to store in the node to be inserted
@@ -42,36 +74,4 @@ heap_t *heap_insert(heap_t **root, int value)
 		swap_int(&(new_node->n), &(new_node->parent->n)), new_node = new_node->parent;
 
 	return (new_node);
-}
-
-/**
- * subtree_size - measures the size of a subtree
- * @tree: pointer to the root node of the subtree to measure the size
- * Return: size of the subtree
- */
-size_t subtree_size(heap_t *tree)
-{
-	size_t size = 0;
-
-	if (tree)
-	{
-		size += 1;
-		size += subtree_size(tree->left);
-		size += subtree_size(tree->right);
-	}
-	return (size);
-}
-
-/**
- * swap_int - swaps two integers
- * @a: pointer to the first integer
- * @b: pointer to the second integer
- */
-void swap_int(int *a, int *b)
-{
-	int tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
 }
