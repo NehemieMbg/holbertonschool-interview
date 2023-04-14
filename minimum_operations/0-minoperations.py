@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
-def minOperations(n):
-    """
+"""
     Given a number n, returns the fewest number of operations needed to result in exactly n H characters in the file.
     """
+
+
+def minOperations(n):
     # Validate input
     if not isinstance(n, int) or n <= 0:
         return 0
