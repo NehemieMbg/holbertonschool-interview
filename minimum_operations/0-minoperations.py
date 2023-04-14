@@ -15,16 +15,12 @@ def minOperations(n):
 
     # Loop until the file contains n characters
     while len(file_contents) < n:
-        # Copy the current file contents
-        file_contents_copy = file_contents.copy()
-
         # Paste the copied contents 2x if possible, else paste once
-        if len(file_contents) + 2 <= n:
-            count += 3
-            file_contents.extend(file_contents_copy)
-            file_contents.extend(file_contents_copy)
+        if (n - len(file_contents)) % len(file_contents) == 0:
+            count += 1
+            file_contents.extend(file_contents)
         else:
             count += 2
-            file_contents.extend(file_contents_copy)
+            file_contents.extend(file_contents[: (n - len(file_contents))])
 
     return count
