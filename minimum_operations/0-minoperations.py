@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 
 """
-    Given a number n, returns the fewest number of operations needed to result in exactly n H characters in the file.
+    Given a number n, returns the fewest number of operations
+    needed to result in exactly n H characters in the file.
     """
 
 
 def minOperations(n):
     """
-    Given a number n, returns the fewest number of operations needed to result in exactly n H characters in the file.
+    Given a number n, returns the fewest number of
+    operations needed to result in exactly n H characters in the file.
     """
     if n <= 0:
         return 0
