@@ -1,71 +1,88 @@
+#include <stdio.h>
 #include "sandpiles.h"
 
-void topple(int grid[3][3], int row, int col)
-{
-	int grains = grid[row][col];
-	grid[row][col] = grains % 4;
-
-	if (grains >= 4)
-	{
-		if (row > 0)
-		{
-			grid[row - 1][col] += 1;
-			topple(grid, row - 1, col);
-		}
-		if (row < 2)
-		{
-			grid[row + 1][col] += 1;
-			topple(grid, row + 1, col);
-		}
-		if (col > 0)
-		{
-			grid[row][col - 1] += 1;
-			topple(grid, row, col - 1);
-		}
-		if (col < 2)
-		{
-			grid[row][col + 1] += 1;
-			topple(grid, row, col + 1);
-		}
-	}
-}
-
+/**
+ * sandpiles_sum - Computes the sum of two sandpiles
+ * @grid1: First sandpile grid
+ * @grid2: Second sandpile grid
+ *
+ * Return: void
+ */
 void sandpiles_sum(int grid1[3][3], int grid2[3][3])
 {
-	int unstable = 1;
-	while (unstable)
+	int i, j, unstable;
+
+	do
 	{
 		unstable = 0;
-		for (int row = 0; row < 3; row++)
+
+		/* Add grids element-wise */
+		for (i = 0; i < 3; i++)
 		{
-			for (int col = 0; col < 3; col++)
+			for (j = 0; j < 3; j++)
 			{
-				if (grid1[row][col] > 3)
+				grid1[i][j] += grid2[i][j];
+			}
+		}
+
+		/* Topple unstable cells */
+		for (i = 0; i < 3; i++)
+		{
+			for (j = 0; j < 3; j++)
+			{
+				if (grid1[i][j] > 3)
 				{
 					unstable = 1;
-					topple(grid1, row, col);
+					grid1[i][j] -= 4;
+					if (i - 1 >= 0)
+					{
+						grid1[i - 1][j] += 1;
+					}
+					if (i + 1 < 3)
+					{
+						grid1[i + 1][j] += 1;
+					}
+					if (j - 1 >= 0)
+					{
+						grid1[i][j - 1] += 1;
+					}
+					if (j + 1 < 3)
+					{
+						grid1[i][j + 1] += 1;
+					}
 				}
 			}
 		}
+
+		/* Print grid1 if it is unstable */
 		if (unstable)
 		{
 			printf("=\n");
 			print_grid(grid1);
 		}
-	}
+
+	} while (unstable);
 }
 
+/**
+ * print_grid - Prints a 3x3 grid
+ * @grid: Grid to print
+ *
+ * Return: void
+ */
 void print_grid(int grid[3][3])
 {
-	for (int row = 0; row < 3; row++)
+	int i, j;
+
+	for (i = 0; i < 3; i++)
 	{
-		for (int col = 0; col < 3; col++)
+		for (j = 0; j < 3; j++)
 		{
-			printf("%d", grid[row][col]);
-			if (col < 2)
+			if (j != 0)
 			{
 				printf(" ");
 			}
+			printf("%d", grid[i][j]);
 		}
 		printf("\n");
 	}
