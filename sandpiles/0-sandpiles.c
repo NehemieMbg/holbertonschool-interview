@@ -1,11 +1,11 @@
 #include "sandpiles.h"
 
 /**
- * sandpiles_sum - Computes the sum of two sandpiles
- * @grid1: 3x3 grid to computes
- * @grid2: 3x3 grid to sum
+ * sandpiles_sum - Computes the sum of two sandpiles and keeps the sum stable.
+ * @grid1: 3x3 grid representing the first sandpile
+ * @grid2: 3x3 grid representing the second sandpile to be added to the first
  *
- * Return: Nothing
+ * Return: void
  */
 void sandpiles_sum(int grid1[3][3], int grid2[3][3])
 {
@@ -28,10 +28,10 @@ void sandpiles_sum(int grid1[3][3], int grid2[3][3])
 }
 
 /**
- * topple_check - check if a "toppling" is needed
- * and manage neighbords accordingly
- * @grid1: grid to check the "stability"
- * Return: 1 for keep toopling, stability not reached yet , 0 otherwise
+ * topple_check - checks if a "toppling" is needed
+ * and manages neighbors accordingly
+ * @grid1: the grid to check the "stability"
+ * Return: 1 to keep toppling as stability is not reached yet, 0 otherwise
  */
 int topple_check(int grid1[3][3])
 {
@@ -68,8 +68,9 @@ int topple_check(int grid1[3][3])
 }
 
 /**
- * print_grid1 - Print the grid
- * @grid: the grid to print
+ * print_grid - Prints a 3x3 grid of integers
+ * @grid: Pointer to the 3x3 grid of integers
+ * Return: void
  */
 
 void print_grid1(int grid[3][3])
