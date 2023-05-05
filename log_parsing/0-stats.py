@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+"""
+Module that reads stdin and computes metrics
+if stdin matches the pattern
+"""
+
+
 import sys
 
 # Initialize variables
