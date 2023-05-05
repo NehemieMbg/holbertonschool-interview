@@ -1,44 +1,46 @@
-#!/usr/bin/python3
-"""
-Module that reads stdin and computes metrics
-if stdin matches the pattern
-"""
-
-
 import sys
 
+# Initialize variables
+total_file_size = 0
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+line_count = 0
 
-total_size = 0
-counter = 0
-codes = ['200', '301', '400', '401', '403', '404', '405', '500']
-count_status = {'200': 0, '301': 0,
-                '400': 0, '401': 0,
-                '403': 0, '404': 0,
-                '405': 0, '500': 0}
+# Read stdin line by line
+for line in sys.stdin:
+    # Parse line
+    try:
+        parts = line.strip().split()
+        ip_address = parts[0]
+        status_code = int(parts[8])
+        file_size = int(parts[9])
+    except:
+        # Skip line if format is not as expected
+        continue
 
-try:
-    for lines in sys.stdin:
-        line = lines.split(" ")
+    # Update variables
+    total_file_size += file_size
+    status_codes[status_code] += 1
+    line_count += 1
 
-        if len(line) > 2:
-            size = line[-1]
-            code = line[-2]
-            if code in count_status:
-                count_status[code] += 1
-            total_size += int(size)
-            counter += 1
+    # Print statistics after every 10 lines or keyboard interruption
+    if line_count % 10 == 0:
+        print(f'Total file size: {total_file_size}')
+        for code in sorted(status_codes):
+            if status_codes[code] > 0:
+                print(f'{code}: {status_codes[code]}')
 
-            if counter == 10:
-                print("File size: {:d}".format(total_size))
-                for k, v in sorted(count_status.items()):
-                    if v != 0:
-                        print("{:s}: {:d}".format(k, v))
-                counter -= 10
+    # Handle keyboard interruption
+    try:
+        signal.signal(signal.SIGINT, lambda signal, frame: sys.exit(0))
+    except KeyboardInterrupt:
+        print(f'Total file size: {total_file_size}')
+        for code in sorted(status_codes):
+            if status_codes[code] > 0:
+                print(f'{code}: {status_codes[code]}')
+        sys.exit(0)
 
-except Exception:
-    pass
-finally:
-    print("File size: {:d}".format(total_size))
-    for k, v in sorted(count_status.items()):
-        if v != 0:
-            print("{:s}: {:d}".format(k, v))
+# Print final statistics
+print(f'Total file size: {total_file_size}')
+for code in sorted(status_codes):
+    if status_codes[code] > 0:
+        print(f'{code}: {status_codes[code]}')
