@@ -1,10 +1,13 @@
 #!/usr/bin/python3
+"""method that determines if data set represents valid UTF-8 encoding."""
+
+
 def validUTF8(data):
-    # Number of bytes remaining for the current UTF-8 character
+    """Number of bytes remaining for the current UTF-8 character """
     remaining_bytes = 0
 
     for byte in data:
-        # Check if the current byte is a continuation byte
+        """Check if the current byte is a continuation byte """
         if remaining_bytes > 0 and (byte >> 6) == 0b10:
             remaining_bytes -= 1
         # Check if the current byte is a leading byte
