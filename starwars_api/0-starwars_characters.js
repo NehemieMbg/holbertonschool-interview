@@ -1,6 +1,7 @@
 #!/usr/bin/node
 
 const request = require('request');
+const filmNum = process.argv[2];
 
 function printChars(chars, i) {
   if (i !== chars.length) {
@@ -15,7 +16,7 @@ function printChars(chars, i) {
 }
 
 request.get(
-  `https://swapi-api.hbtn.io/api/films/${process.argv[2]}`,
+  `https://swapi-api.hbtn.io/api/films/${filmNum}`,
   function (err, _res, body) {
     if (err) console.log(err);
     else {
